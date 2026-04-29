@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Doe | Cyber-Systems Architect</title>
+    <style>
+        /* ========================================
+        CORE CYBERPUNK VARIABLES
+        ========================================
+        */
+        :root {
+            --bg-base: #050508;
+            --bg-panel: #121216;
+            --neon-cyan: #00f3ff;
+            --neon-magenta: #ff00ff;
+            --neon-lime: #39ff14;
+            --text-primary: #e0e6ed;
+            --text-secondary: #8b9bb4;
+            --font-sans: 'Inter', 'Segoe UI', sans-serif;
+            --font-mono: 'Fira Code', 'Courier New', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ========================================
+        ANIMATION HOOKS (PENDING ACTIVATION)
+        ========================================
+        Use these placeholders to drop in your @keyframes 
+        when you are ready to bring the site to life.
+
+        .staggered-entry {
+            opacity: 0;
+            transform: translateY(20px);
+            /* animation: slide-up 0.8s forwards; */
+        }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            /* transition: all 0.6s ease-out; */
+        }
+
+        /* @keyframes neon-flicker { ... }
+        @keyframes data-stream { ... }
+        */
+        ========================================
+        */
+
+        /* Navigation */
+        nav {
+            background: rgba(5, 5, 8, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            font-family: var(--font-mono);
+            color: var(--neon-cyan);
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--neon-magenta);
+            text-shadow: 0 0 8px var(--neon-magenta);
+        }
+
+        /* Layout Utility */
+        section {
+            padding: 6rem 10%;
+        }
+
+        .section-title {
+            color: var(--neon-cyan);
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid var(--neon-magenta);
+            padding-left: 1rem;
+        }
+
+        /* Hero Section */
+        #hero {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        #hero h1 {
+            font-size: 4.5rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        #hero h3 {
+            font-size: 1.5rem;
+            color: var(--neon-lime);
+            margin-bottom: 2rem;
+        }
+
+        #hero p {
+            max-width: 600px;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+        }
+
+        .cyber-btn {
+            display: inline-block;
+            background: transparent;
+            color: var(--neon-cyan);
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--neon-cyan);
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* Hover Glow Hook */
+        .cyber-btn.hover-glow:hover {
+            background: rgba(0, 243, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.4);
+            text-shadow: 0 0 5px var(--neon-cyan);
+        }
+
+        /* About & Skills */
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .bio-text p {
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .tech-stack {
+            background: var(--bg-panel);
+            border: 1px solid rgba(255, 0, 255, 0.2);
+            padding: 2rem;
+            border-radius: 4px;
+        }
+
+        .skill-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .skill-tag {
+            background: rgba(57, 255, 20, 0.05);
+            color: var(--neon-lime);
+            border: 1px solid var(--neon-lime);
+            padding: 0.5rem 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            border-radius: 2px;
+        }
+
+        /* Projects Section */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .project-card {
+            background: var(--bg-panel);
+            border: 1px solid rgba(139, 155, 180, 0.1);
+            padding: 2.5rem;
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 2px;
+            background: var(--neon-magenta);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card.hover-glow:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 0, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .project-card.hover-glow:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-card h4 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .project-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-link {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            border-left: 2px solid rgba(0, 243, 255, 0.3);
+            padding-left: 2rem;
+            margin-left: 1rem;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.45rem;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: var(--bg-base);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 50%;
+        }
+
+        .timeline-date {
+            font-family: var(--font-mono);
+            color: var(--neon-lime);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item p {
+            color: var(--text-secondary);
+        }
+
+        /* Contact / Data Link */
+        footer {
+            background: var(--bg-panel);
+            border-top: 1px solid rgba(0, 243, 255, 0.2);
+            padding: 4rem 10%;
+            text-align: center;
+        }
+
+        footer h2 {
+            color: var(--neon-magenta);
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            transition: color 0.3s ease;
+        }
+
+        .social-links a.hover-glow:hover {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 8px var(--neon-cyan);
+        }
+
+        .system-status {
+            margin-top: 3rem;
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .about-container { grid-template-columns: 1fr; }
+            #hero h1 { font-size: 3rem; }
+            nav ul { display: none; /* In a real build, add a hamburger menu */ }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-logo">SYS.ARCHITECT //</div>
+        <ul>
+            <li><a href="#hero" class="hover-glow">01. Home</a></li>
+            <li><a href="#about" class="hover-glow">02. Initialize</a></li>
+            <li><a href="#projects" class="hover-glow">03. Protocols</a></li>
+            <li><a href="#experience" class="hover-glow">04. Logs</a></li>
+        </ul>
+    </nav>
+
+    <section id="hero" class="staggered-entry">
+        <h3><span style="color: var(--text-secondary);">> IDENTIFICATION:</span> Alex Doe</h3>
+        <h1>Cyber-Systems<br>Architect</h1>
+        <p>Bridging the gap between hardware infrastructure and next-gen software protocols. I build scalable, high-performance systems for the modern web.</p>
+        <div>
+            <a href="#projects" class="cyber-btn hover-glow">Execute Portfolio.exe</a>
+        </div>
+    </section>
+
+    <section id="about" class="reveal-on-scroll">
+        <h2 class="section-title">02. Initialize</h2>
+        <div class="about-container">
+            <div class="bio-text">
+                <p>I am a technically adept problem solver specializing in complex network environments and data flow optimization. With a background in structural programming and UI/UX engineering, I don't just write code—I architect digital ecosystems.</p>
+                <p>My mission is to translate chaotic business requirements into streamlined, automated, and elegant digital products. When offline, I analyze emerging tech trends and modify open-source hardware.</p>
+            </div>
+            <div class="tech-stack hover-glow">
+                <h3 style="margin-bottom: 1.5rem; color: var(--neon-magenta);">Current Tech Stack</h3>
+                <div class="skill-grid">
+                    <span class="skill-tag">Neural Networks</span>
+                    <span class="skill-tag">Cloud Infrastructure</span>
+                    <span class="skill-tag">React / Next.js</span>
+                    <span class="skill-tag">Node.js / Express</span>
+                    <span class="skill-tag">PostgreSQL</span>
+                    <span class="skill-tag">Agile Leadership</span>
+                    <span class="skill-tag">System Security</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="reveal-on-scroll">
+        <h2 class="section-title">03. Active Protocols</h2>
+        <div class="project-grid">
+            
+            <div class="project-card hover-glow">
+                <h4>Neon-Grid Dashboard</h4>
+                <p>A real-time analytics interface built for enterprise-level data processing. Handles over 100k requests per minute with sub-second latency.</p>
+                <a href="#" class="project-link hover-glow">Read Documentation -></a>
+            </div>
+
+            <div class="project-card hover-glow">
+                <h4>Quantum-State API</h4>
+                <p>A highly secure, decentralized API gateway that standardizes cross-platform communication for legacy and modern financial applications.</p>
+                <a href="#" class="project-link hover-glow">Read Documentation -></a>
+            </div>
+
+            <div class="project-card hover-glow">
+                <h4>Synth-Wave Engine</h4>
+                <p>An experimental open-source graphics rendering tool designed to optimize browser-based 3D models using WebGL and custom shaders.</p>
+                <a href="#" class="project-link hover-glow">Read Documentation -></a>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="experience" class="reveal-on-scroll">
+        <h2 class="section-title">04. Access Logs</h2>
+        <div class="timeline">
+            
+            <div class="timeline-item">
+                <div class="timeline-date">2024 - PRESENT</div>
+                <h4>Senior Systems Architect // OmniCorp Tech</h4>
+                <p>Lead a team of 12 engineers in migrating core services to a serverless architecture, reducing operational costs by 35% and improving uptime to 99.99%.</p>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">2021 - 2024</div>
+                <h4>Lead Developer // Nexus Solutions</h4>
+                <p>Developed proprietary data-scraping algorithms and built internal deployment pipelines that accelerated product launch times by 2 months.</p>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">2018 - 2021</div>
+                <h4>Full-Stack Engineer // CyberDyne Web</h4>
+                <p>Maintained monolithic applications and transitioned legacy codebase to a modern React frontend, dramatically improving client satisfaction.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer id="contact" class="reveal-on-scroll">
+        <h2>Establish Data Link</h2>
+        <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto;">My inbox is currently open for new opportunities. Whether you have a secure contract or just want to ping my network, I'll return the transmission.</p>
+        
+        <div class="social-links">
+            <a href="#" class="hover-glow">[ GitHub ]</a>
+            <a href="#" class="hover-glow">[ LinkedIn ]</a>
+            <a href="mailto:alex.doe@securemail.com" class="hover-glow">[ Email Transmission ]</a>
+        </div>
+
+        <div class="system-status">
+            SYSTEM STATUS: ONLINE | PORTFOLIO V1.0.4 | &copy; 2026 ALEX DOE
+        </div>
+    </footer>
+
+</body>
+</html>
