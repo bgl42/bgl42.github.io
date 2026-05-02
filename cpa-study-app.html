@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CPA Study App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5f0;
+      --surface: #ffffff;
+      --surface2: #f0ede8;
+      --border: #e2ddd6;
+      --text: #1a1814;
+      --text-muted: #7a7570;
+      --text-light: #b0aba4;
+      --far: #2d6a4f;
+      --far-light: #e8f5ee;
+      --far-mid: #52b788;
+      --aud: #1d3557;
+      --aud-light: #e8eef5;
+      --aud-mid: #457b9d;
+      --reg: #7b2d8b;
+      --reg-light: #f3e8f7;
+      --reg-mid: #b06cc4;
+      --bar: #b5451b;
+      --bar-light: #fdf0eb;
+      --bar-mid: #e07a5f;
+      --correct: #2d6a4f;
+      --wrong: #c0392b;
+      --correct-bg: #e8f5ee;
+      --wrong-bg: #fdecea;
+      --shadow: 0 2px 12px rgba(0,0,0,0.07);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 400;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-badge {
+      background: var(--text);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      padding: 3px 8px;
+      letter-spacing: 0.1em;
+      border-radius: 2px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .streak-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .app {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 36px 24px 80px;
+    }
+
+    /* ── SECTION TABS ── */
+    .section-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .section-tab {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+    }
+
+    .section-tab:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+    .section-tab.active-far  { border-color: var(--far);  background: var(--far-light); }
+    .section-tab.active-aud  { border-color: var(--aud);  background: var(--aud-light); }
+    .section-tab.active-reg  { border-color: var(--reg);  background: var(--reg-light); }
+    .section-tab.active-bar  { border-color: var(--bar);  background: var(--bar-light); }
+
+    .tab-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 6px;
+    }
+
+    .section-tab.active-far .tab-label { color: var(--far); }
+    .section-tab.active-aud .tab-label { color: var(--aud); }
+    .section-tab.active-reg .tab-label { color: var(--reg); }
+    .section-tab.active-bar .tab-label { color: var(--bar); }
+
+    .tab-name {
+      font-family: 'Fraunces', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .tab-progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .tab-progress-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.5s ease;
+    }
+
+    .far-fill  { background: var(--far-mid); }
+    .aud-fill  { background: var(--aud-mid); }
+    .reg-fill  { background: var(--reg-mid); }
+    .bar-fill  { background: var(--bar-mid); }
+
+    .tab-score {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ── MODE SWITCHER ── */
+    .mode-switcher {
+      display: flex;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px;
+      margin-bottom: 28px;
+      width: fit-content;
+    }
+
+    .mode-btn {
+      padding: 8px 22px;
+      border: none;
+      border-radius: 7px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .mode-btn.active {
+      background: var(--text);
+      color: #fff;
+    }
+
+    /* ── FLASHCARD ── */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .card-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+    }
+
+    .flashcard-wrapper {
+      width: 100%;
+      max-width: 680px;
+      perspective: 1200px;
+      cursor: pointer;
+    }
+
+    .flashcard {
+      width: 100%;
+      min-height: 320px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .flashcard.flipped { transform: rotateY(180deg); }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 320px;
+    }
+
+    .card-back { transform: rotateY(180deg); }
+
+    .card-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .card-tag-far { background: var(--far-light); color: var(--far); }
+    .card-tag-aud { background: var(--aud-light); color: var(--aud); }
+    .card-tag-reg { background: var(--reg-light); color: var(--reg); }
+    .card-tag-bar { background: var(--bar-light); color: var(--bar); }
+
+    .card-question {
+      font-family: 'Fraunces', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .card-hint {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-answer {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    .card-answer strong {
+      font-weight: 600;
+      display: block;
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    /* section color for back face top border */
+    .card-face.card-back { border-top-width: 4px; }
+    .back-far  { border-top-color: var(--far); }
+    .back-aud  { border-top-color: var(--aud); }
+    .back-reg  { border-top-color: var(--reg); }
+    .back-bar  { border-top-color: var(--bar); }
+
+    .card-controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .card-btn {
+      padding: 12px 28px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .card-btn:hover { background: var(--surface2); transform: translateY(-1px); }
+
+    .card-btn-knew {
+      background: var(--correct-bg);
+      border-color: var(--correct);
+      color: var(--correct);
+    }
+
+    .card-btn-knew:hover { background: #d4edda; }
+
+    .card-btn-missed {
+      background: var(--wrong-bg);
+      border-color: var(--wrong);
+      color: var(--wrong);
+    }
+
+    .card-btn-missed:hover { background: #fad7d5; }
+
+    /* ── MULTIPLE CHOICE ── */
+    .mc-area { display: flex; flex-direction: column; gap: 24px; }
+
+    .mc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 36px 40px;
+      box-shadow: var(--shadow);
+    }
+
+    .mc-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .mc-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-light);
+    }
+
+    .mc-question {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+
+    .mc-options { display: flex; flex-direction: column; gap: 10px; }
+
+    .mc-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.18s;
+      background: var(--surface);
+    }
+
+    .mc-option:hover:not(.disabled) { border-color: var(--text-muted); background: var(--surface2); }
+
+    .mc-option.correct { border-color: var(--correct); background: var(--correct-bg); }
+    .mc-option.wrong   { border-color: var(--wrong);   background: var(--wrong-bg); }
+    .mc-option.disabled { cursor: default; }
+
+    .mc-letter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text-light);
+      min-width: 20px;
+      margin-top: 1px;
+    }
+
+    .mc-option.correct .mc-letter { color: var(--correct); font-weight: 700; }
+    .mc-option.wrong   .mc-letter { color: var(--wrong); }
+
+    .mc-text { font-size: 0.95rem; line-height: 1.5; color: var(--text); }
+
+    .mc-explanation {
+      margin-top: 18px;
+      padding: 14px 18px;
+      background: var(--surface2);
+      border-left: 3px solid var(--text-muted);
+      border-radius: 4px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      display: none;
+    }
+
+    .mc-explanation.show { display: block; }
+    .mc-explanation strong { color: var(--text); }
+
+    /* ── PROGRESS ── */
+    .progress-area { display: flex; flex-direction: column; gap: 24px; }
+
+    .progress-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 4px;
+    }
+
+    .progress-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    .progress-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .progress-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .progress-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .progress-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .progress-section-name {
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .progress-pct {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.4rem;
+      font-weight: 400;
+    }
+
+    .progress-bar-bg {
+      height: 8px;
+      background: var(--surface2);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.8s ease;
+    }
+
+    .progress-stats {
+      display: flex;
+      gap: 20px;
+    }
+
+    .p-stat { display: flex; flex-direction: column; gap: 2px; }
+    .p-stat-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text);
+    }
+    .p-stat-label {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .reset-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.8rem;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+
+    .reset-btn:hover { border-color: var(--wrong); color: var(--wrong); }
+
+    .overall-card {
+      background: var(--text);
+      color: #fff;
+      border-radius: 14px;
+      padding: 32px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .overall-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-bottom: 8px;
+    }
+
+    .overall-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .overall-num {
+      font-family: 'Fraunces', serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .overall-sub { font-size: 0.8rem; opacity: 0.5; margin-top: 4px; }
+
+    /* ── EMPTY / DONE ── */
+    .done-state {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .done-state h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .done-state p { color: var(--text-muted); margin-bottom: 24px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      header { padding: 14px 20px; }
+      .app { padding: 20px 14px 60px; }
+      .section-tabs { grid-template-columns: repeat(2, 1fr); }
+      .progress-grid { grid-template-columns: 1fr; }
+      .card-face { padding: 28px 24px; }
+      .mc-card { padding: 24px 20px; }
+      .overall-card { flex-direction: column; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    CPA Study <span class="logo-badge">BETA</span>
+  </div>
+  <div class="header-right">
+    <div class="streak-badge">🔥 <span id="streak-count">0</span> day streak</div>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- SECTION TABS -->
+  <div class="section-tabs" id="section-tabs">
+    <div class="section-tab active-far" onclick="setSection('far')" id="tab-far">
+      <div class="tab-label">Section 01</div>
+      <div class="tab-name">FAR</div>
+      <div class="tab-progress-bar"><div class="tab-progress-fill far-fill" id="prog-far" style="width:0%"></div></div>
+      <div class="tab-score" id="score-far">0 / 0 correct</div>
+    </div>
+    <div class="section-tab" onclick="setSection('aud')" id="tab-aud">
+      <div class="tab-label">Section 02</div>
+      <div class="tab-name">AUD</div>
+      <div class="tab-progress-bar"><div class="tab-progress-fill aud-fill" id="prog-aud" style="width:0%"></div></div>
+      <div class="tab-score" id="score-aud">0 / 0 correct</div>
+    </div>
+    <div class="section-tab" onclick="setSection('reg')" id="tab-reg">
+      <div class="tab-label">Section 03</div>
+      <div class="tab-name">REG</div>
+      <div class="tab-progress-bar"><div class="tab-progress-fill reg-fill" id="prog-reg" style="width:0%"></div></div>
+      <div class="tab-score" id="score-reg">0 / 0 correct</div>
+    </div>
+    <div class="section-tab" onclick="setSection('bar')" id="tab-bar">
+      <div class="tab-label">Section 04</div>
+      <div class="tab-name">BAR</div>
+      <div class="tab-progress-bar"><div class="tab-progress-fill bar-fill" id="prog-bar" style="width:0%"></div></div>
+      <div class="tab-score" id="score-bar">0 / 0 correct</div>
+    </div>
+  </div>
+
+  <!-- MODE SWITCHER -->
+  <div class="mode-switcher">
+    <button class="mode-btn active" onclick="setMode('flashcards')">Flashcards</button>
+    <button class="mode-btn" onclick="setMode('quiz')">Multiple Choice</button>
+    <button class="mode-btn" onclick="setMode('progress')">Progress</button>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="content-area"></div>
+
+</div>
+
+<script>
+// ── DATA ──
+const data = {
+  far: {
+    name: "Financial Accounting & Reporting",
+    flashcards: [
+      { q: "What is the accounting equation?", a: "Assets = Liabilities + Stockholders' Equity. This foundational equation must always remain in balance after every transaction." },
+      { q: "Define 'accrual basis' accounting.", a: "Revenue is recognized when earned and expenses when incurred, regardless of when cash is received or paid." },
+      { q: "What is the difference between IFRS and US GAAP?", a: "IFRS is principles-based (used internationally), while US GAAP is rules-based. Key differences include inventory methods (IFRS bans LIFO) and revenue recognition timing." },
+      { q: "What is goodwill and how is it recorded?", a: "Goodwill is an intangible asset recorded when a company is acquired for more than the fair value of its net identifiable assets. It is not amortized but tested annually for impairment." },
+      { q: "Explain the matching principle.", a: "Expenses should be recognized in the same period as the revenues they help generate, ensuring accurate profit reporting for each period." },
+      { q: "What is a deferred tax liability?", a: "A deferred tax liability arises when taxable income is less than book income in the current period, creating a future tax obligation (e.g., accelerated depreciation for tax purposes)." },
+    ],
+    quiz: [
+      {
+        q: "Under US GAAP, which inventory costing method is NOT permitted?",
+        options: ["FIFO", "LIFO", "Weighted Average", "Specific Identification"],
+        answer: 1,
+        explanation: "Under IFRS, LIFO is prohibited. However, under US GAAP, LIFO is still permitted. The question tests awareness that IFRS bans LIFO — a common exam trap."
+      },
+      {
+        q: "A company collects $12,000 for a 12-month service contract on July 1. Under accrual accounting, what is recognized as revenue by December 31?",
+        options: ["$12,000", "$0", "$6,000", "$1,000"],
+        answer: 2,
+        explanation: "$6,000 is correct. Six months of the 12-month contract have elapsed (July–December), so 6/12 × $12,000 = $6,000 is earned and recognized as revenue."
+      },
+      {
+        q: "Which financial statement reports a company's financial position at a specific point in time?",
+        options: ["Income Statement", "Statement of Cash Flows", "Balance Sheet", "Statement of Retained Earnings"],
+        answer: 2,
+        explanation: "The Balance Sheet (Statement of Financial Position) reports assets, liabilities, and equity as of a specific date. The Income Statement and Cash Flow Statement cover a period of time."
+      },
+      {
+        q: "Goodwill is tested for impairment:",
+        options: ["Every quarter", "Annually, or when triggering events occur", "Only when the company is sold", "Every 5 years"],
+        answer: 1,
+        explanation: "Under US GAAP (ASC 350), goodwill must be tested for impairment at least annually, or more frequently if events or changes in circumstances indicate the carrying value may exceed fair value."
+      },
+    ]
+  },
+  aud: {
+    name: "Auditing & Attestation",
+    flashcards: [
+      { q: "What are the three types of audit opinions?", a: "Unmodified (clean), Modified (qualified, adverse, or disclaimer of opinion). A qualified opinion means the statements are fairly presented except for a specific matter." },
+      { q: "Define 'materiality' in auditing.", a: "Materiality is the threshold above which misstatements could influence the decisions of financial statement users. It's both quantitative (dollar amount) and qualitative (nature of the item)." },
+      { q: "What is the difference between inherent risk and control risk?", a: "Inherent risk is the risk of material misstatement absent any controls. Control risk is the risk that a misstatement won't be prevented or detected by internal controls." },
+      { q: "What is an engagement letter?", a: "A written agreement between auditor and client that defines the scope, objectives, responsibilities, and terms of the audit engagement before work begins." },
+      { q: "Explain the concept of professional skepticism.", a: "Auditors must maintain a questioning mind and critically assess evidence, not simply accepting management's representations without sufficient corroboration." },
+      { q: "What is substantive testing?", a: "Audit procedures designed to detect material misstatements in financial statement assertions, including tests of details (transactions, balances) and analytical procedures." },
+    ],
+    quiz: [
+      {
+        q: "An auditor issues a disclaimer of opinion when:",
+        options: ["There is a material misstatement", "The auditor is not independent", "There is a scope limitation so significant the auditor cannot form an opinion", "The company uses IFRS"],
+        answer: 2,
+        explanation: "A disclaimer of opinion is issued when the auditor cannot obtain sufficient appropriate evidence and the possible effects are both material and pervasive — they literally cannot form an opinion."
+      },
+      {
+        q: "Which of the following best describes 'audit risk'?",
+        options: [
+          "The risk that the auditor will be sued",
+          "The risk that the auditor expresses an inappropriate opinion on materially misstated statements",
+          "The risk of fraud by management",
+          "The risk of a going concern issue"
+        ],
+        answer: 1,
+        explanation: "Audit Risk = Inherent Risk × Control Risk × Detection Risk. It represents the risk that the auditor gives a clean opinion when financial statements contain a material misstatement."
+      },
+      {
+        q: "The primary purpose of an audit is to:",
+        options: [
+          "Detect all fraud",
+          "Prepare financial statements",
+          "Express an opinion on whether the financial statements are fairly presented",
+          "Ensure compliance with all laws"
+        ],
+        answer: 2,
+        explanation: "Auditors provide reasonable (not absolute) assurance that financial statements are free of material misstatement. Detecting all fraud or ensuring full legal compliance is beyond the audit's scope."
+      },
+      {
+        q: "Which assertion is MOST at risk when auditing accounts receivable?",
+        options: ["Existence", "Completeness", "Valuation", "Classification"],
+        answer: 0,
+        explanation: "For assets like accounts receivable, existence is the key risk — management may overstate assets by recording receivables that don't actually exist (fictitious sales)."
+      },
+    ]
+  },
+  reg: {
+    name: "Taxation & Regulation",
+    flashcards: [
+      { q: "What is the standard deduction for a single filer in 2024?", a: "$14,600 for single filers and married filing separately. $29,200 for married filing jointly. $21,900 for head of household." },
+      { q: "Define 'basis' in taxation.", a: "Basis is the cost or value assigned to an asset for tax purposes. It determines gain or loss upon sale and is used to compute depreciation. Adjusted basis reflects additions and reductions over time." },
+      { q: "What is a pass-through entity?", a: "An entity (S-Corp, LLC, partnership) where income passes through to owners' personal returns and is taxed at individual rates, avoiding corporate-level tax." },
+      { q: "What is the difference between tax avoidance and tax evasion?", a: "Tax avoidance is legally reducing tax liability through legitimate planning. Tax evasion is illegal — deliberately misrepresenting income or deductions to reduce taxes owed." },
+      { q: "What is the capital gains tax rate for long-term gains?", a: "Long-term capital gains (assets held >1 year) are taxed at 0%, 15%, or 20% depending on income. Short-term gains are taxed as ordinary income." },
+      { q: "What is MACRS?", a: "Modified Accelerated Cost Recovery System — the primary depreciation method for US tax purposes, using accelerated depreciation to front-load deductions on business assets." },
+    ],
+    quiz: [
+      {
+        q: "For an asset to qualify for long-term capital gain treatment, it must be held for:",
+        options: ["At least 6 months", "More than 1 year", "At least 1 year", "More than 2 years"],
+        answer: 1,
+        explanation: "Long-term capital gain treatment requires the asset to be held for MORE THAN one year. Held exactly one year = short-term. The distinction is important — 'more than' is the operative phrase on the CPA exam."
+      },
+      {
+        q: "Which of the following is NOT deductible as a business expense?",
+        options: ["Employee salaries", "Business meals (50%)", "Federal income taxes paid", "Advertising expenses"],
+        answer: 2,
+        explanation: "Federal income taxes paid are NOT deductible as a business expense. State and local income taxes may be deductible. This is a classic CPA exam trap question."
+      },
+      {
+        q: "An S-Corporation avoids double taxation because:",
+        options: [
+          "It pays no taxes at all",
+          "Income passes through to shareholders and is taxed at their individual rates",
+          "It only pays capital gains tax",
+          "It is exempt as a small business"
+        ],
+        answer: 1,
+        explanation: "S-Corps are pass-through entities. Income flows to shareholders' Form 1040, taxed once at individual rates — unlike C-Corps where income is taxed at the corporate level AND again when distributed as dividends."
+      },
+      {
+        q: "Under the cash method of accounting, income is recognized when:",
+        options: ["Earned", "Invoiced", "Received", "Contracted"],
+        answer: 2,
+        explanation: "Cash method = record when cash is received (income) or paid (expense). This contrasts with the accrual method used under GAAP, where income is recorded when earned."
+      },
+    ]
+  },
+  bar: {
+    name: "Business Analysis & Reporting",
+    flashcards: [
+      { q: "What is the current ratio and what does it measure?", a: "Current Ratio = Current Assets ÷ Current Liabilities. It measures short-term liquidity — a ratio above 1 means the company can cover its near-term obligations." },
+      { q: "Define 'EBITDA' and its purpose.", a: "Earnings Before Interest, Taxes, Depreciation & Amortization. Used to measure a company's core operating profitability, removing the effects of financing, accounting, and tax decisions." },
+      { q: "What is a sensitivity analysis?", a: "A technique that shows how changes in one variable affect the outcome of a model, helping identify which assumptions have the greatest impact on a financial projection." },
+      { q: "Explain the DuPont analysis framework.", a: "Breaks Return on Equity (ROE) into three components: Net Profit Margin × Asset Turnover × Financial Leverage. Helps identify the driver of ROE changes." },
+      { q: "What is a contribution margin?", a: "Contribution Margin = Sales Revenue − Variable Costs. It represents the amount each unit of sales contributes to covering fixed costs and generating profit." },
+      { q: "What is working capital and why does it matter?", a: "Working Capital = Current Assets − Current Liabilities. Positive working capital means the company can fund day-to-day operations. Negative working capital can signal liquidity risk." },
+    ],
+    quiz: [
+      {
+        q: "A company has current assets of $500,000 and current liabilities of $250,000. What is the current ratio?",
+        options: ["0.5", "1.5", "2.0", "2.5"],
+        answer: 2,
+        explanation: "Current Ratio = $500,000 ÷ $250,000 = 2.0. This means the company has $2 in current assets for every $1 of current liabilities — a healthy liquidity position."
+      },
+      {
+        q: "Which of the following would INCREASE a company's debt-to-equity ratio?",
+        options: ["Issuing new common stock", "Paying off long-term debt", "Taking out a new bank loan", "Retaining earnings"],
+        answer: 2,
+        explanation: "Debt-to-Equity = Total Debt ÷ Total Equity. Taking out a new loan increases debt without changing equity, raising the ratio. Issuing stock or retaining earnings increases equity, which lowers the ratio."
+      },
+      {
+        q: "Break-even point in units is calculated as:",
+        options: [
+          "Fixed Costs ÷ Selling Price",
+          "Fixed Costs ÷ Contribution Margin per Unit",
+          "Variable Costs ÷ Selling Price",
+          "Total Costs ÷ Selling Price"
+        ],
+        answer: 1,
+        explanation: "Break-Even Units = Fixed Costs ÷ Contribution Margin per Unit. Contribution Margin = Selling Price − Variable Cost per Unit. This formula is essential for cost-volume-profit analysis."
+      },
+      {
+        q: "In the DuPont framework, Return on Equity (ROE) equals:",
+        options: [
+          "Net Income ÷ Total Assets",
+          "Net Profit Margin × Asset Turnover × Equity Multiplier",
+          "EBITDA ÷ Total Equity",
+          "Operating Income ÷ Stockholders' Equity"
+        ],
+        answer: 1,
+        explanation: "DuPont ROE = (Net Income/Sales) × (Sales/Assets) × (Assets/Equity). This decomposition reveals whether ROE is driven by profitability, efficiency, or leverage."
+      },
+    ]
+  }
+};
+
+// ── STATE ──
+let currentSection = 'far';
+let currentMode = 'flashcards';
+let cardIndex = 0;
+let isFlipped = false;
+
+const progress = {
+  far:  { known: 0, missed: 0, mcCorrect: 0, mcTotal: 0 },
+  aud:  { known: 0, missed: 0, mcCorrect: 0, mcTotal: 0 },
+  reg:  { known: 0, missed: 0, mcCorrect: 0, mcTotal: 0 },
+  bar:  { known: 0, missed: 0, mcCorrect: 0, mcTotal: 0 },
+};
+
+const mcAnswered = { far: {}, aud: {}, reg: {}, bar: {} };
+
+// ── SECTION ──
+function setSection(s) {
+  currentSection = s;
+  cardIndex = 0;
+  isFlipped = false;
+  document.querySelectorAll('.section-tab').forEach(t => {
+    t.className = 'section-tab';
+  });
+  document.getElementById('tab-' + s).className = 'section-tab active-' + s;
+  render();
+}
+
+// ── MODE ──
+function setMode(m) {
+  currentMode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  cardIndex = 0;
+  isFlipped = false;
+  render();
+}
+
+// ── RENDER ──
+function render() {
+  updateTabScores();
+  if (currentMode === 'flashcards') renderFlashcards();
+  else if (currentMode === 'quiz') renderQuiz();
+  else renderProgress();
+}
+
+function sectionColor(s) {
+  return { far: '#2d6a4f', aud: '#1d3557', reg: '#7b2d8b', bar: '#b5451b' }[s];
+}
+
+// ── FLASHCARDS ──
+function renderFlashcards() {
+  const cards = data[currentSection].flashcards;
+  const s = currentSection;
+  if (cardIndex >= cards.length) {
+    document.getElementById('content-area').innerHTML = `
+      <div class="flashcard-area">
+        <div class="done-state">
+          <h2>🎉 Deck Complete!</h2>
+          <p>You've reviewed all ${cards.length} ${s.toUpperCase()} flashcards.</p>
+          <button class="card-btn" onclick="cardIndex=0;isFlipped=false;render()">Start Over</button>
+        </div>
+      </div>`;
+    return;
+  }
+  const card = cards[cardIndex];
+  document.getElementById('content-area').innerHTML = `
+    <div class="flashcard-area">
+      <div class="card-counter">${cardIndex + 1} of ${cards.length}</div>
+      <div class="flashcard-wrapper" onclick="flipCard()">
+        <div class="flashcard" id="fc">
+          <div class="card-face card-front">
+            <span class="card-tag card-tag-${s}">${s.toUpperCase()}</span>
+            <p class="card-question">${card.q}</p>
+            <span class="card-hint">👆 Click to reveal answer</span>
+          </div>
+          <div class="card-face card-back back-${s}">
+            <span class="card-tag card-tag-${s}">${s.toUpperCase()} — Answer</span>
+            <div class="card-answer">${card.a}</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-controls" id="card-controls" style="display:none">
+        <button class="card-btn card-btn-missed" onclick="markCard(false)">✗ Missed it</button>
+        <button class="card-btn" onclick="nextCard()">Skip →</button>
+        <button class="card-btn card-btn-knew" onclick="markCard(true)">✓ Got it</button>
+      </div>
+      <div class="card-controls" id="flip-hint">
+        <button class="card-btn" onclick="flipCard()">Reveal Answer</button>
+      </div>
+    </div>`;
+  if (isFlipped) {
+    document.getElementById('fc').classList.add('flipped');
+    document.getElementById('card-controls').style.display = 'flex';
+    document.getElementById('flip-hint').style.display = 'none';
+  }
+}
+
+function flipCard() {
+  isFlipped = !isFlipped;
+  const fc = document.getElementById('fc');
+  if (fc) fc.classList.toggle('flipped');
+  const controls = document.getElementById('card-controls');
+  const hint = document.getElementById('flip-hint');
+  if (controls) controls.style.display = isFlipped ? 'flex' : 'none';
+  if (hint) hint.style.display = isFlipped ? 'none' : 'flex';
+}
+
+function markCard(knew) {
+  if (knew) progress[currentSection].known++;
+  else progress[currentSection].missed++;
+  nextCard();
+}
+
+function nextCard() {
+  cardIndex++;
+  isFlipped = false;
+  render();
+}
+
+// ── QUIZ ──
+function renderQuiz() {
+  const questions = data[currentSection].quiz;
+  const s = currentSection;
+  let html = '<div class="mc-area">';
+  questions.forEach((q, qi) => {
+    const answered = mcAnswered[s][qi];
+    html += `<div class="mc-card">
+      <div class="mc-meta">
+        <span class="card-tag card-tag-${s}">${s.toUpperCase()}</span>
+        <span class="mc-num">Q${qi + 1}</span>
+      </div>
+      <p class="mc-question">${q.q}</p>
+      <div class="mc-options">`;
+    const letters = ['A', 'B', 'C', 'D'];
+    q.options.forEach((opt, oi) => {
+      let cls = 'mc-option';
+      if (answered !== undefined) {
+        cls += ' disabled';
+        if (oi === q.answer) cls += ' correct';
+        else if (oi === answered && oi !== q.answer) cls += ' wrong';
+      }
+      const clickHandler = answered !== undefined ? '' : `onclick="answerMC(${qi}, ${oi})"`;
+      html += `<div class="${cls}" ${clickHandler}>
+        <span class="mc-letter">${letters[oi]}</span>
+        <span class="mc-text">${opt}</span>
+      </div>`;
+    });
+    html += `</div>`;
+    if (answered !== undefined) {
+      html += `<div class="mc-explanation show"><strong>Explanation:</strong> ${q.explanation}</div>`;
+    }
+    html += `</div>`;
+  });
+  html += '</div>';
+  document.getElementById('content-area').innerHTML = html;
+}
+
+function answerMC(qi, chosen) {
+  const s = currentSection;
+  const q = data[s].quiz[qi];
+  mcAnswered[s][qi] = chosen;
+  if (!progress[s].mcTotal) progress[s].mcTotal = 0;
+  if (!progress[s].mcCorrect) progress[s].mcCorrect = 0;
+  progress[s].mcTotal++;
+  if (chosen === q.answer) progress[s].mcCorrect++;
+  render();
+}
+
+// ── PROGRESS ──
+function renderProgress() {
+  const sections = ['far', 'aud', 'reg', 'bar'];
+  const names = { far: 'FAR', aud: 'AUD', reg: 'REG', bar: 'BAR' };
+
+  let totalCorrect = 0, totalQ = 0;
+  sections.forEach(s => {
+    totalCorrect += progress[s].mcCorrect + progress[s].known;
+    totalQ += data[s].flashcards.length + data[s].quiz.length;
+  });
+
+  const overallPct = totalQ > 0 ? Math.round((totalCorrect / totalQ) * 100) : 0;
+
+  let html = `<div class="progress-area">
+    <div class="overall-card">
+      <div>
+        <div class="overall-label">Overall Progress</div>
+        <div class="overall-title">CPA Exam Readiness</div>
+        <div class="overall-sub">${totalCorrect} correct answers across all sections</div>
+      </div>
+      <div style="text-align:right">
+        <div class="overall-num">${overallPct}%</div>
+        <div class="overall-sub">mastery score</div>
+      </div>
+    </div>
+    <div class="progress-grid">`;
+
+  sections.forEach(s => {
+    const p = progress[s];
+    const flashTotal = data[s].flashcards.length;
+    const quizTotal = data[s].quiz.length;
+    const flashDone = p.known + p.missed;
+    const pct = flashTotal + quizTotal > 0
+      ? Math.round(((p.known + p.mcCorrect) / (flashTotal + quizTotal)) * 100) : 0;
+    html += `
+      <div class="progress-card">
+        <div class="progress-card-header">
+          <div>
+            <div class="tab-label" style="color:var(--${s})">${names[s]}</div>
+            <div class="progress-section-name">${data[s].name}</div>
+          </div>
+          <div class="progress-pct" style="color:var(--${s})">${pct}%</div>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill ${s}-fill" style="width:${pct}%"></div>
+        </div>
+        <div class="progress-stats">
+          <div class="p-stat">
+            <span class="p-stat-num">${p.known}</span>
+            <span class="p-stat-label">Cards known</span>
+          </div>
+          <div class="p-stat">
+            <span class="p-stat-num">${p.missed}</span>
+            <span class="p-stat-label">Missed</span>
+          </div>
+          <div class="p-stat">
+            <span class="p-stat-num">${p.mcCorrect}/${Object.keys(mcAnswered[s]).length}</span>
+            <span class="p-stat-label">Quiz score</span>
+          </div>
+        </div>
+        <button class="reset-btn" onclick="resetSection('${s}')">Reset ${names[s]}</button>
+      </div>`;
+  });
+
+  html += `</div></div>`;
+  document.getElementById('content-area').innerHTML = html;
+}
+
+function resetSection(s) {
+  progress[s] = { known: 0, missed: 0, mcCorrect: 0, mcTotal: 0 };
+  mcAnswered[s] = {};
+  render();
+}
+
+// ── TAB SCORES ──
+function updateTabScores() {
+  ['far', 'aud', 'reg', 'bar'].forEach(s => {
+    const p = progress[s];
+    const total = data[s].flashcards.length + data[s].quiz.length;
+    const correct = p.known + p.mcCorrect;
+    const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+    document.getElementById('prog-' + s).style.width = pct + '%';
+    document.getElementById('score-' + s).textContent = `${correct} / ${total} correct`;
+  });
+}
+
+// ── STREAK (localStorage) ──
+function updateStreak() {
+  const today = new Date().toDateString();
+  const last = localStorage.getItem('cpa_last_visit');
+  let streak = parseInt(localStorage.getItem('cpa_streak') || '0');
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  if (last === today) { /* same day, no change */ }
+  else if (last === yesterday) { streak++; }
+  else { streak = 1; }
+  localStorage.setItem('cpa_last_visit', today);
+  localStorage.setItem('cpa_streak', streak);
+  document.getElementById('streak-count').textContent = streak;
+}
+
+// ── INIT ──
+updateStreak();
+render();
+</script>
+</body>
+</html>
