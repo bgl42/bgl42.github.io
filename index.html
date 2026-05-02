@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
     :root {
       --black: #0a0a0a;
       --off-black: #111111;
@@ -22,9 +22,9 @@
       --white: #ffffff;
       --accent-red: #c0392b;
     }
-
+ 
     html { scroll-behavior: smooth; }
-
+ 
     body {
       background: var(--black);
       color: var(--cream);
@@ -33,7 +33,7 @@
       line-height: 1.6;
       overflow-x: hidden;
     }
-
+ 
     /* ─── NOISE OVERLAY ─── */
     body::before {
       content: '';
@@ -44,7 +44,7 @@
       z-index: 1000;
       opacity: 0.35;
     }
-
+ 
     /* ─── NAVIGATION ─── */
     nav {
       position: fixed;
@@ -58,7 +58,7 @@
       background: linear-gradient(to bottom, rgba(10,10,10,0.95) 0%, transparent 100%);
       backdrop-filter: blur(2px);
     }
-
+ 
     .nav-logo {
       font-family: 'Playfair Display', serif;
       font-size: 1.1rem;
@@ -66,15 +66,15 @@
       letter-spacing: 0.05em;
       color: var(--white);
     }
-
+ 
     .nav-logo span { color: var(--gold); }
-
+ 
     .nav-links {
       display: flex;
       gap: 40px;
       list-style: none;
     }
-
+ 
     .nav-links a {
       font-family: 'DM Mono', monospace;
       font-size: 0.72rem;
@@ -85,9 +85,9 @@
       text-decoration: none;
       transition: color 0.3s;
     }
-
+ 
     .nav-links a:hover { color: var(--gold); }
-
+ 
     /* ─── HERO ─── */
     #hero {
       min-height: 100vh;
@@ -99,7 +99,7 @@
       position: relative;
       overflow: hidden;
     }
-
+ 
     /* NYC skyline SVG background */
     .skyline-bg {
       position: absolute;
@@ -109,7 +109,7 @@
       opacity: 0.06;
       pointer-events: none;
     }
-
+ 
     /* vertical gold line accent */
     #hero::before {
       content: '';
@@ -121,9 +121,9 @@
       background: linear-gradient(to bottom, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
       opacity: 0.3;
     }
-
+ 
     .hero-text { position: relative; z-index: 2; }
-
+ 
     .hero-eyebrow {
       font-family: 'DM Mono', monospace;
       font-size: 0.72rem;
@@ -134,7 +134,7 @@
       opacity: 0;
       animation: fadeUp 0.8s ease forwards 0.2s;
     }
-
+ 
     .hero-name {
       font-family: 'Playfair Display', serif;
       font-size: clamp(3.5rem, 7vw, 6.5rem);
@@ -145,12 +145,12 @@
       opacity: 0;
       animation: fadeUp 0.9s ease forwards 0.4s;
     }
-
+ 
     .hero-name em {
       font-style: italic;
       color: var(--gold);
     }
-
+ 
     .hero-tagline {
       font-size: 1.05rem;
       font-weight: 300;
@@ -161,7 +161,7 @@
       opacity: 0;
       animation: fadeUp 0.9s ease forwards 0.6s;
     }
-
+ 
     .hero-ctas {
       display: flex;
       gap: 20px;
@@ -169,7 +169,7 @@
       opacity: 0;
       animation: fadeUp 0.9s ease forwards 0.8s;
     }
-
+ 
     .btn-primary {
       background: var(--gold);
       color: var(--black);
@@ -182,12 +182,12 @@
       font-weight: 400;
       transition: background 0.3s, transform 0.2s;
     }
-
+ 
     .btn-primary:hover {
       background: var(--gold-light);
       transform: translateY(-2px);
     }
-
+ 
     .btn-secondary {
       border: 1px solid var(--steel);
       color: var(--cream);
@@ -199,12 +199,12 @@
       text-decoration: none;
       transition: border-color 0.3s, color 0.3s;
     }
-
+ 
     .btn-secondary:hover {
       border-color: var(--gold);
       color: var(--gold);
     }
-
+ 
     /* ─── HEADSHOT CARD ─── */
     .headshot-card {
       position: relative;
@@ -212,7 +212,7 @@
       opacity: 0;
       animation: fadeIn 1.2s ease forwards 0.9s;
     }
-
+ 
     .headshot-frame {
       position: relative;
       width: 100%;
@@ -220,7 +220,7 @@
       background: var(--graphite);
       overflow: hidden;
     }
-
+ 
     /* gold corner accents */
     .headshot-frame::before,
     .headshot-frame::after {
@@ -240,45 +240,15 @@
       border-bottom: 2px solid var(--gold);
       border-right: 2px solid var(--gold);
     }
-
-    .headshot-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      color: var(--muted);
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .headshot-placeholder:hover { background: var(--steel); }
-
-    .headshot-placeholder svg {
-      width: 64px;
-      height: 64px;
-      opacity: 0.4;
-    }
-
-    .headshot-placeholder p {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      opacity: 0.5;
-    }
-
+ 
     .headshot-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: none;
+      object-position: center top;
+      display: block;
     }
-
-    #headshot-upload { display: none; }
-
+ 
     /* decorative offset box */
     .headshot-card::after {
       content: '';
@@ -288,19 +258,19 @@
       transform: translate(14px, 14px);
       z-index: -1;
     }
-
+ 
     .headshot-meta {
       margin-top: 20px;
       text-align: center;
     }
-
+ 
     .headshot-meta h3 {
       font-family: 'Playfair Display', serif;
       font-size: 1.2rem;
       font-weight: 700;
       color: var(--white);
     }
-
+ 
     .headshot-meta p {
       font-family: 'DM Mono', monospace;
       font-size: 0.68rem;
@@ -309,7 +279,7 @@
       color: var(--gold);
       margin-top: 4px;
     }
-
+ 
     /* ─── DIVIDER ─── */
     .divider {
       display: flex;
@@ -318,7 +288,7 @@
       padding: 0 60px;
       margin: 0;
     }
-
+ 
     .divider-line { flex: 1; height: 1px; background: var(--steel); }
     .divider-label {
       font-family: 'DM Mono', monospace;
@@ -328,13 +298,13 @@
       color: var(--muted);
       white-space: nowrap;
     }
-
+ 
     /* ─── SECTIONS ─── */
     section {
       padding: 100px 60px;
       position: relative;
     }
-
+ 
     .section-label {
       font-family: 'DM Mono', monospace;
       font-size: 0.68rem;
@@ -344,7 +314,7 @@
       margin-bottom: 16px;
       display: block;
     }
-
+ 
     .section-title {
       font-family: 'Playfair Display', serif;
       font-size: clamp(2rem, 4vw, 3.2rem);
@@ -353,35 +323,35 @@
       color: var(--white);
       margin-bottom: 64px;
     }
-
+ 
     /* ─── ABOUT ─── */
     #about { background: var(--off-black); }
-
+ 
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 80px;
       align-items: start;
     }
-
+ 
     .about-text p {
       color: var(--muted);
       font-size: 1.05rem;
       line-height: 1.9;
       margin-bottom: 20px;
     }
-
+ 
     .about-text p strong {
       color: var(--cream);
       font-weight: 500;
     }
-
+ 
     .about-stats {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 2px;
     }
-
+ 
     .stat-box {
       background: var(--graphite);
       padding: 32px 28px;
@@ -389,9 +359,9 @@
       overflow: hidden;
       transition: background 0.3s;
     }
-
+ 
     .stat-box:hover { background: var(--steel); }
-
+ 
     .stat-box::before {
       content: '';
       position: absolute;
@@ -400,7 +370,7 @@
       height: 100%;
       background: var(--gold);
     }
-
+ 
     .stat-number {
       font-family: 'Playfair Display', serif;
       font-size: 2.4rem;
@@ -410,7 +380,7 @@
       line-height: 1;
       margin-bottom: 8px;
     }
-
+ 
     .stat-label {
       font-family: 'DM Mono', monospace;
       font-size: 0.65rem;
@@ -418,10 +388,10 @@
       text-transform: uppercase;
       color: var(--muted);
     }
-
+ 
     /* ─── EXPERIENCE ─── */
     #experience { background: var(--black); }
-
+ 
     .exp-item {
       display: grid;
       grid-template-columns: 200px 1fr;
@@ -431,11 +401,11 @@
       align-items: start;
       transition: all 0.3s;
     }
-
+ 
     .exp-item:first-of-type { border-top: 1px solid var(--steel); }
-
+ 
     .exp-item:hover .exp-title { color: var(--gold); }
-
+ 
     .exp-date {
       font-family: 'DM Mono', monospace;
       font-size: 0.72rem;
@@ -443,7 +413,7 @@
       color: var(--muted);
       padding-top: 4px;
     }
-
+ 
     .exp-badge {
       display: inline-block;
       background: var(--gold);
@@ -455,7 +425,7 @@
       padding: 3px 10px;
       margin-top: 10px;
     }
-
+ 
     .exp-title {
       font-family: 'Playfair Display', serif;
       font-size: 1.5rem;
@@ -464,31 +434,31 @@
       margin-bottom: 6px;
       transition: color 0.3s;
     }
-
+ 
     .exp-company {
       font-size: 0.9rem;
       color: var(--gold);
       margin-bottom: 16px;
       font-weight: 400;
     }
-
+ 
     .exp-desc {
       font-size: 0.95rem;
       color: var(--muted);
       line-height: 1.8;
     }
-
+ 
     .exp-desc ul {
       list-style: none;
       margin-top: 12px;
     }
-
+ 
     .exp-desc ul li {
       padding-left: 20px;
       position: relative;
       margin-bottom: 8px;
     }
-
+ 
     .exp-desc ul li::before {
       content: '—';
       position: absolute;
@@ -496,24 +466,24 @@
       color: var(--gold);
       font-size: 0.8rem;
     }
-
+ 
     /* ─── SKILLS ─── */
     #skills { background: var(--off-black); }
-
+ 
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 2px;
     }
-
+ 
     .skill-category {
       background: var(--graphite);
       padding: 40px 36px;
       transition: background 0.3s;
     }
-
+ 
     .skill-category:hover { background: var(--steel); }
-
+ 
     .skill-cat-title {
       font-family: 'DM Mono', monospace;
       font-size: 0.65rem;
@@ -522,13 +492,13 @@
       color: var(--gold);
       margin-bottom: 24px;
     }
-
+ 
     .skill-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
     }
-
+ 
     .skill-tag {
       border: 1px solid var(--steel);
       color: var(--muted);
@@ -538,15 +508,15 @@
       padding: 6px 14px;
       transition: border-color 0.3s, color 0.3s;
     }
-
+ 
     .skill-tag:hover {
       border-color: var(--gold);
       color: var(--cream);
     }
-
+ 
     /* ─── EDUCATION ─── */
     #education { background: var(--black); }
-
+ 
     .edu-card {
       background: var(--graphite);
       display: grid;
@@ -556,7 +526,7 @@
       position: relative;
       overflow: hidden;
     }
-
+ 
     .edu-card::before {
       content: 'RU';
       position: absolute;
@@ -570,7 +540,7 @@
       pointer-events: none;
       user-select: none;
     }
-
+ 
     .edu-school {
       font-family: 'Playfair Display', serif;
       font-size: 2rem;
@@ -578,19 +548,19 @@
       color: var(--white);
       margin-bottom: 12px;
     }
-
+ 
     .edu-degree {
       font-size: 1rem;
       color: var(--muted);
       margin-bottom: 24px;
     }
-
+ 
     .edu-pills {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
     }
-
+ 
     .edu-pill {
       background: var(--steel);
       color: var(--cream);
@@ -599,13 +569,13 @@
       letter-spacing: 0.08em;
       padding: 8px 18px;
     }
-
+ 
     .edu-right {
       text-align: right;
       position: relative;
       z-index: 2;
     }
-
+ 
     .edu-grad-label {
       font-family: 'DM Mono', monospace;
       font-size: 0.65rem;
@@ -614,23 +584,23 @@
       color: var(--gold);
       margin-bottom: 8px;
     }
-
+ 
     .edu-grad-date {
       font-family: 'Playfair Display', serif;
       font-size: 1.8rem;
       font-weight: 700;
       color: var(--white);
     }
-
+ 
     /* ─── FOCUS AREAS ─── */
     #focus { background: var(--off-black); }
-
+ 
     .focus-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 2px;
     }
-
+ 
     .focus-card {
       background: var(--graphite);
       padding: 56px 48px;
@@ -638,9 +608,9 @@
       overflow: hidden;
       transition: background 0.3s;
     }
-
+ 
     .focus-card:hover { background: var(--steel); }
-
+ 
     .focus-number {
       font-family: 'Playfair Display', serif;
       font-size: 6rem;
@@ -652,14 +622,14 @@
       right: 32px;
       transition: color 0.3s;
     }
-
+ 
     .focus-card:hover .focus-number { color: rgba(201, 168, 76, 0.15); }
-
+ 
     .focus-icon {
       font-size: 2rem;
       margin-bottom: 20px;
     }
-
+ 
     .focus-title {
       font-family: 'Playfair Display', serif;
       font-size: 1.6rem;
@@ -667,40 +637,40 @@
       color: var(--white);
       margin-bottom: 16px;
     }
-
+ 
     .focus-desc {
       font-size: 0.95rem;
       color: var(--muted);
       line-height: 1.8;
     }
-
+ 
     /* ─── CONTACT ─── */
     #contact {
       background: var(--graphite);
       text-align: center;
     }
-
+ 
     .contact-inner {
       max-width: 640px;
       margin: 0 auto;
     }
-
+ 
     .contact-inner .section-title { margin-bottom: 24px; }
-
+ 
     .contact-sub {
       font-size: 1rem;
       color: var(--muted);
       line-height: 1.8;
       margin-bottom: 56px;
     }
-
+ 
     .contact-links {
       display: flex;
       justify-content: center;
       gap: 20px;
       flex-wrap: wrap;
     }
-
+ 
     /* ─── FOOTER ─── */
     footer {
       background: var(--off-black);
@@ -710,38 +680,38 @@
       align-items: center;
       border-top: 1px solid var(--steel);
     }
-
+ 
     footer p {
       font-family: 'DM Mono', monospace;
       font-size: 0.65rem;
       letter-spacing: 0.1em;
       color: var(--muted);
     }
-
+ 
     footer span { color: var(--gold); }
-
+ 
     /* ─── ANIMATIONS ─── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
+ 
     @keyframes fadeIn {
       from { opacity: 0; }
       to   { opacity: 1; }
     }
-
+ 
     .reveal {
       opacity: 0;
       transform: translateY(30px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
-
+ 
     .reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
-
+ 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
       nav { padding: 20px 28px; }
@@ -761,7 +731,7 @@
   </style>
 </head>
 <body>
-
+ 
   <!-- NAV -->
   <nav>
     <div class="nav-logo">B<span>.</span>Leach</div>
@@ -773,7 +743,7 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
-
+ 
   <!-- HERO -->
   <section id="hero">
     <!-- NYC skyline SVG -->
@@ -835,7 +805,7 @@
       <rect x="1397" y="110" width="24" height="170"/>
       <rect x="1423" y="140" width="20" height="140"/>
     </svg>
-
+ 
     <div class="hero-text">
       <p class="hero-eyebrow">Accounting &amp; Finance Professional</p>
       <h1 class="hero-name">Brady<br><em>Leach</em></h1>
@@ -847,34 +817,26 @@
         <a href="#contact" class="btn-secondary">Get in Touch</a>
       </div>
     </div>
-
+ 
     <!-- HEADSHOT -->
     <div class="headshot-card">
-      <div class="headshot-frame" onclick="document.getElementById('headshot-upload').click()">
-        <img class="headshot-img" id="headshot-display" src="" alt="Brady Leach" />
-        <div class="headshot-placeholder" id="headshot-placeholder">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="12" cy="8" r="4"/>
-            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-          </svg>
-          <p>Click to add headshot</p>
-        </div>
+      <div class="headshot-frame">
+        <img class="headshot-img" src="headshot.jpg" alt="Brady Leach" />
       </div>
-      <input type="file" id="headshot-upload" accept="image/*" onchange="loadHeadshot(event)" />
       <div class="headshot-meta">
         <h3>Brady Leach</h3>
         <p>Accounting · Rutgers Business School</p>
       </div>
     </div>
   </section>
-
+ 
   <!-- DIVIDER -->
   <div class="divider">
     <div class="divider-line"></div>
     <span class="divider-label">New York City</span>
     <div class="divider-line"></div>
   </div>
-
+ 
   <!-- ABOUT -->
   <section id="about">
     <div class="reveal">
@@ -913,14 +875,14 @@
       </div>
     </div>
   </section>
-
+ 
   <!-- EXPERIENCE -->
   <section id="experience">
     <div class="reveal">
       <span class="section-label">02 — Experience</span>
       <h2 class="section-title">Where I've Put<br>My Skills to Work</h2>
     </div>
-
+ 
     <div class="exp-item reveal">
       <div>
         <div class="exp-date">Summer 2026</div>
@@ -940,7 +902,7 @@
         </div>
       </div>
     </div>
-
+ 
     <div class="exp-item reveal">
       <div>
         <div class="exp-date">Ongoing</div>
@@ -960,7 +922,7 @@
       </div>
     </div>
   </section>
-
+ 
   <!-- FOCUS AREAS -->
   <section id="focus">
     <div class="reveal">
@@ -986,7 +948,7 @@
       </div>
     </div>
   </section>
-
+ 
   <!-- SKILLS -->
   <section id="skills">
     <div class="reveal">
@@ -1026,7 +988,7 @@
       </div>
     </div>
   </section>
-
+ 
   <!-- EDUCATION -->
   <section id="education">
     <div class="reveal">
@@ -1051,7 +1013,7 @@
       </div>
     </div>
   </section>
-
+ 
   <!-- CONTACT -->
   <section id="contact">
     <div class="contact-inner reveal">
@@ -1067,29 +1029,14 @@
       </div>
     </div>
   </section>
-
+ 
   <!-- FOOTER -->
   <footer>
     <p>© 2026 <span>Brady Leach</span> · All rights reserved</p>
     <p>Rutgers Business School <span>·</span> B.S. Accounting <span>·</span> May 2027</p>
   </footer>
-
+ 
   <script>
-    // Headshot upload
-    function loadHeadshot(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = document.getElementById('headshot-display');
-        const placeholder = document.getElementById('headshot-placeholder');
-        img.src = e.target.result;
-        img.style.display = 'block';
-        placeholder.style.display = 'none';
-      };
-      reader.readAsDataURL(file);
-    }
-
     // Scroll reveal
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
@@ -1100,7 +1047,7 @@
         }
       });
     }, { threshold: 0.1 });
-
+ 
     reveals.forEach(el => observer.observe(el));
   </script>
 </body>
